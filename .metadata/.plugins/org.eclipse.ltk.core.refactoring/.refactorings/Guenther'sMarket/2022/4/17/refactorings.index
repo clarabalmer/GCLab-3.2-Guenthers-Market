@@ -3,3 +3,24 @@
 1650390056597	Rename method 'orderPrint'
 1650398658541	Rename local variable 'menuStringsSplit'
 1650430979863	Rename method 'priceFixer'
+1650506299150	Rename method 'shortOrderPrint'
+1650518159588	Move method
+1650518167094	Move method
+1650518200777	Move method
+1650518217728	Move method
+1650518239435	Move method
+1650518286651	Move method
+1650518310928	Move method
+1650518370745	Move method
+1650518412743	Move method
+1650518432536	Move method
+1650518438242	Move method
+1650518461186	Move method
+1650518507943	Move method
+1650518536534	Move method
+1650518559709	Move method
+1650518564387	Move method
+1650518646328	Move method
+1650518701112	Move method
+1650518832340	Move method
+1650519196696	Rename method 'valueSplitter'
