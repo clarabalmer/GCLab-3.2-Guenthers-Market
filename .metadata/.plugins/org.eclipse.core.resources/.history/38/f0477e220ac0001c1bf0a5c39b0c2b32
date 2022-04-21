@@ -1,0 +1,107 @@
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class Market {
+	
+	private static Scanner scnr;
+	private static Map<String, Double> items = new TreeMap<>();
+	private static ArrayList<String> itemsOrdered = new ArrayList<>();
+	private static ArrayList<Double> itemPrices = new ArrayList<>();
+
+	public static void main(String[] args) {
+		scnr = new Scanner(System.in);
+		fillItemsMap();
+		printMenu();
+		
+		boolean repeatOrder = true;
+		while (repeatOrder) {
+			shortOrderPrint(userOrderChoice());
+			repeatOrder = optionToContinueOrdering();
+		}
+		
+		
+		
+		
+		displayOrder();
+		
+		scnr.close();
+	}
+	
+	private static boolean optionToContinueOrdering() {
+		System.out.print("Would you like to order anything else? y/n/menu ");
+		String choice = scnr.next();
+		if (choice.equalsIgnoreCase("y" )) {
+			return true;
+		} else if (choice.equalsIgnoreCase("n")) {
+			return false;
+		} else if (choice.equalsIgnoreCase("menu")) {
+			printMenu();
+			return optionToContinueOrdering();
+		} else {
+			System.out.println("I don't understand.");
+			return (optionToContinueOrdering());
+		}
+	}
+	
+	private static void displayOrder() {
+		String itemString = "";
+		double itemPrice = 0.0;
+		for (int i = 0; i < itemsOrdered.size(); i++) {
+			itemString = itemsOrdered.get(i);
+			itemPrice = itemPrices.get(i);
+			System.out.printf("%-20s", itemString);
+			System.out.printf("%-20s", itemPrice);
+			System.out.println();
+		}
+	}
+	
+	private static void orderAdd(Entry<String, Double> entry) {
+		itemsOrdered.add(entry.getKey());
+		itemPrices.add(entry.getValue());
+	}
+	
+	private static void shortOrderPrint(String str) {
+		boolean validChoice = false;
+		for (Map.Entry<String, Double> entry : items.entrySet()) {
+			if (entry.getKey().equalsIgnoreCase(str)) {
+				System.out.println("Adding " + entry.getKey() + " to cart at " + entry.getValue());
+				orderAdd(entry);
+				validChoice = true;
+				break;
+			}
+		}
+		if (!validChoice) {
+			System.out.println("Sorry, we don't have those. Please try again.");
+		}
+		
+	}
+	
+	private static String userOrderChoice() {
+		System.out.print("\nWhat item would you like to order? ");
+		return scnr.next();
+	}
+	
+	private static void printMenu() {
+		System.out.println("Guenther's Market Menu");
+		System.out.printf("%-20s", "items");
+		System.out.printf("%-20s", "price");
+		System.out.print("\n=========================");
+		for (Map.Entry<String,Double> entry : items.entrySet()) {
+			System.out.println();
+            System.out.printf("%-20s", entry.getKey());
+            System.out.printf("%5.2f", entry.getValue());
+		}
+		System.out.print("\n=========================");
+		System.out.print("\n");
+	}
+	
+	private static void fillItemsMap() {
+		items.put("Apple", .49);
+		items.put("Banana", 10.00);
+		items.put("Cherries", 2.99);
+	}
+	
+}

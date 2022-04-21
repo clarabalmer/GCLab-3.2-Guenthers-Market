@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+/Users/clarabalmer/Desktop/GC-Labs/3.2-Guenther's-Market/.metadata/.plugins/org.eclipse.jdt.core
+1865797976.index
+3972580518.index
+1816963510.index

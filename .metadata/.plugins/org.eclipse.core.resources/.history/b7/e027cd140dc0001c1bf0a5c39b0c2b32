@@ -1,0 +1,147 @@
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Scanner;
+import java.util.TreeMap;
+
+public class Market {
+	
+	private static Scanner scnr;
+	private static Map<String, Double> items = new TreeMap<>();
+	private static ArrayList<String> itemsOrdered = new ArrayList<>();
+	private static ArrayList<Double> itemPrices = new ArrayList<>();
+
+	public static void main(String[] args) {
+		scnr = new Scanner(System.in);
+		fillItemsMap();
+		printMenu();
+		
+		boolean repeatOrder = true;
+		while (repeatOrder) {
+			shortOrderPrint(userOrderChoice());
+			repeatOrder = optionToContinueOrdering();
+		}
+		
+		
+		
+		
+		displayOrder();
+		
+		scnr.close();
+	}
+	
+	private static double averageItemPrice() {
+		double itemsTotal = 0.0;
+		for (int i = 0; i < itemPrices.size(); i++) {
+			itemsTotal += itemPrices.get(i);
+		}
+		return itemsTotal / itemPrices.size();
+	}
+	
+	private static boolean optionToContinueOrdering() {
+		System.out.print("\nWould you like to order anything else? y/n/menu ");
+		String choice = scnr.next();
+		if (choice.equalsIgnoreCase("y" )) {
+			return true;
+		} else if (choice.equalsIgnoreCase("n")) {
+			return false;
+		} else if (choice.equalsIgnoreCase("menu")) {
+			printMenu();
+			return optionToContinueOrdering();
+		} else {
+			System.out.println("I don't understand.");
+			return (optionToContinueOrdering());
+		}
+	}
+	
+	private static int lowestPriceIndex() {
+		int index = -1;
+		double min = 1000000000000.00;
+		for (int i = 0; i < itemPrices.size(); i++) {
+			if (min > itemPrices.get(i)) {
+				min = itemPrices.get(i);
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	private static int highestPriceIndex() {
+		//of the items ordered, which has the highest price? return the first index of that item in itemsOrdered
+		int index = -1;
+		double max = 0;
+		for (int i = 0; i < itemPrices.size(); i++) {
+			if (max < itemPrices.get(i)) {
+				max = itemPrices.get(i);
+				index = i;
+			}
+		}
+		return index;
+	}
+	
+	private static void displayOrder() {
+		System.out.println("\nThanks for your order!");
+		System.out.println("Here's what you got:");
+		String itemString = "";
+		double itemPrice = 0.0;
+		for (int i = 0; i < itemsOrdered.size(); i++) {
+			itemString = itemsOrdered.get(i);
+			itemPrice = itemPrices.get(i);
+			System.out.printf("%-20s", itemString);
+			System.out.printf("%-20s", itemPrice);
+			System.out.println();
+		}
+		System.out.println("Average price per item in order was " + averageItemPrice() + ".");
+	}
+	
+	private static void orderAdd(Entry<String, Double> entry) {
+		itemsOrdered.add(entry.getKey());
+		itemPrices.add(entry.getValue());
+	}
+	
+	private static void shortOrderPrint(String str) {
+		boolean validChoice = false;
+		for (Map.Entry<String, Double> entry : items.entrySet()) {
+			if (entry.getKey().equalsIgnoreCase(str)) {
+				System.out.println("Adding " + entry.getKey() + " to cart at " + entry.getValue());
+				orderAdd(entry);
+				validChoice = true;
+				break;
+			}
+		}
+		if (!validChoice) {
+			System.out.println("Sorry, we don't have those. Please try again.");
+		}
+		
+	}
+	
+	private static String userOrderChoice() {
+		System.out.print("\nWhat item would you like to order? ");
+		return scnr.next();
+	}
+	
+	private static void printMenu() {
+		System.out.println("Guenther's Market Menu");
+		System.out.printf("%-10s", "code");
+		System.out.printf("%-20s", "item");
+		System.out.printf("%-20s", "price");
+		System.out.print("\n===================================");
+		int i = 1;
+		for (Map.Entry<String,Double> entry : items.entrySet()) {
+			System.out.println();
+			System.out.printf("%-10s", i + ".");
+            System.out.printf("%-20s", entry.getKey());
+            System.out.printf("%5.2f", entry.getValue());
+            i++;
+		}
+		System.out.print("\n=========================");
+		System.out.print("\n");
+	}
+	
+	private static void fillItemsMap() {
+		items.put("Apple", .49);
+		items.put("Banana", 10.00);
+		items.put("Cherries", 2.99);
+	}
+	
+}
